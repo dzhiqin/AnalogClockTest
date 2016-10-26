@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
@@ -34,7 +35,15 @@ public class MyAnalogClock extends View{
 	private int availableWidth=100;
 	private int availableHeight=100;
 	private String sTimeZoneString;
-	
+	public MyAnalogClock(Context context){
+		
+		this(context,"GMT+8:00");
+		//super(context);
+	}
+	public MyAnalogClock(Context context,AttributeSet attrs,int defStyle){
+		//super(context,attrs,defStyle);
+		this(context,"GMT+8:00");
+	}
 	public MyAnalogClock(Context context,AttributeSet attr) {
 		// TODO 自动生成的构造函数存根
 		this(context,"GMT+8:00");
@@ -43,16 +52,23 @@ public class MyAnalogClock extends View{
 		super(context);
 		this.sTimeZoneString=sTimeZone;
 		mBmpHour=BitmapFactory.decodeResource(getResources(), R.drawable.hour);
-		bmdHour=new BitmapDrawable(mBmpHour);
+		//bmdHour=new BitmapDrawable(mBmpHour);
+		bmdHour=new BitmapDrawable(getResources(),mBmpHour);
 		mBmpMinute=BitmapFactory.decodeResource(getResources(), R.drawable.minute);
-		bmdMinute=new BitmapDrawable(mBmpMinute);
+		//bmdMinute=new BitmapDrawable(mBmpMinute);
+		bmdMinute=new BitmapDrawable(getResources(),mBmpMinute);
 		mBmpSecond=BitmapFactory.decodeResource(getResources(), R.drawable.second);
-		bmdSecond=new BitmapDrawable(mBmpSecond);
+		//bmdSecond=new BitmapDrawable(mBmpSecond);
+		bmdSecond=new BitmapDrawable(getResources(),mBmpSecond);
 		mBmpDial=BitmapFactory.decodeResource(getResources(), R.drawable.clockbg);
-		bmdDial=new BitmapDrawable(mBmpDial);
-		
+		//bmdDial=new BitmapDrawable(mBmpDial);
+		bmdDial=new BitmapDrawable(getResources(),mBmpDial);
 		mWidth=mBmpDial.getWidth();
 		mHeight=mBmpDial.getHeight();
+		centerX=availableWidth/2;
+		centerY=availableHeight/2;
+		mPaint=new Paint();
+		mPaint.setColor(Color.BLUE);
 		run();
 	}
 	public void run(){
@@ -108,8 +124,9 @@ public class MyAnalogClock extends View{
 		canvas.restore();
 		mTempWidth=bmdSecond.getIntrinsicWidth();
 		mTempHeight=bmdSecond.getIntrinsicHeight();
-		canvas.rotate(minuteRotate, centerX, centerY);
-		bmdSecond.setBounds(centerX-mTempWidth/2, centerY-mTempHeight/2, centerX+mTempWidth/2, centerY+mTempHeight/2);
+		canvas.rotate(secondRotate, centerX, centerY);
+		bmdSecond.setBounds(centerX-mTempWidth/2, centerY-mTempHeight/2, 
+				centerX+mTempWidth/2, centerY+mTempHeight/2);
 		bmdSecond.draw(canvas);
 		if(scaled){
 			canvas.restore();
